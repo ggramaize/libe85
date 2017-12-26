@@ -69,8 +69,7 @@ static byte __Z85_decoder [96] = {
 //  --------------------------------------------------------------------------
 //  Encode a byte array as a string
 
-char *
-Z85_encode (byte *data, size_t size)
+char* Z85_encode (byte *data, size_t size)
 {
     //  Accepts only byte arrays bounded to 4 bytes
     if (size % 4)
@@ -78,10 +77,10 @@ Z85_encode (byte *data, size_t size)
     
     size_t encoded_size = size * 5 / 4;
     char *encoded = malloc (encoded_size + 1);
-    uint char_nbr = 0;
-    uint byte_nbr = 0;
+    
+    size_t char_nbr = 0;
     uint32_t value = 0;
-    while (byte_nbr < size) {
+    for (size_t byte_nbr = 0; byte_nbr < size; ) {
         //  Accumulate value in base 256 (binary)
         value <<= 8;
 	value += data [byte_nbr++];
@@ -105,8 +104,7 @@ Z85_encode (byte *data, size_t size)
 //  Decode an encoded string into a byte array; size of array will be
 //  strlen (string) * 4 / 5.
 
-byte *
-Z85_decode (char *string)
+byte* Z85_decode (char *string)
 {
     //  Accepts only strings bounded to 5 bytes
     if (strlen (string) % 5)
@@ -115,10 +113,9 @@ Z85_decode (char *string)
     size_t decoded_size = strlen (string) * 4 / 5;
     byte *decoded = malloc (decoded_size);
 
-    uint byte_nbr = 0;
-    uint char_nbr = 0;
+    size_t byte_nbr = 0;
     uint32_t value = 0;
-    while (char_nbr < strlen (string)) {
+    for (size_t char_nbr = 0; char_nbr < strlen (string); ) {
         //  Accumulate value in base 85
         value = value * 85 + __Z85_decoder [(byte) string [char_nbr++] - 32];
         if (char_nbr % 5 == 0) {
