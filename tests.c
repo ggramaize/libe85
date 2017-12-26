@@ -83,7 +83,8 @@ Z85_encode (byte *data, size_t size)
     uint32_t value = 0;
     while (byte_nbr < size) {
         //  Accumulate value in base 256 (binary)
-        value = value * 256 + data [byte_nbr++];
+        value <<= 8;
+	value += data [byte_nbr++];
         if (byte_nbr % 4 == 0) {
             //  Output value in base 85
             uint divisor = 52200625; // 85 ^ 4, doesn't need to be computed each time
