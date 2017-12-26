@@ -37,7 +37,7 @@ typedef unsigned char byte;
 #define streq(s1,s2,n) (!strncmp ((s1), (s2), (n)))
 
 //  Maps base 256 to base 85
-static char encoder [85 + 1] = {
+static char __Z85_encoder [85 + 1] = {
     "0123456789" 
     "abcdefghij" 
     "klmnopqrst" 
@@ -51,7 +51,7 @@ static char encoder [85 + 1] = {
 
 //  Maps base 85 to base 256
 //  We chop off lower 32 and higher 128 ranges
-static byte decoder [96] = {
+static byte __Z85_decoder [96] = {
     0x00, 0x44, 0x00, 0x54, 0x53, 0x52, 0x48, 0x00, 
     0x4B, 0x4C, 0x46, 0x41, 0x00, 0x3F, 0x3E, 0x45, 
     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 
@@ -89,7 +89,7 @@ Z85_encode (byte *data, size_t size)
             //  Output value in base 85
             uint divisor = 52200625; // 85 ^ 4, doesn't need to be computed each time
             while (divisor) {
-                encoded [char_nbr++] = encoder [value / divisor % 85];
+                encoded [char_nbr++] = __Z85_encoder [value / divisor % 85];
                 divisor /= 85;
             }
             value = 0;
@@ -120,7 +120,7 @@ Z85_decode (char *string)
     uint32_t value = 0;
     while (char_nbr < strlen (string)) {
         //  Accumulate value in base 85
-        value = value * 85 + decoder [(byte) string [char_nbr++] - 32];
+        value = value * 85 + __Z85_decoder [(byte) string [char_nbr++] - 32];
         if (char_nbr % 5 == 0) {
             //  Output value in base 256
             uint divisor = 16777216; // 256 ^ 3, doesn't need to be computed every time.
