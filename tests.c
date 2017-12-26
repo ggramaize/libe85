@@ -86,7 +86,7 @@ char* Z85_encode (byte *data, size_t size)
 	value += data [byte_nbr++];
         if (byte_nbr % 4 == 0) {
             //  Output value in base 85
-            uint divisor = 52200625; // 85 ^ 4, doesn't need to be computed each time
+            uint32_t divisor = 52200625; // 85 ^ 4, doesn't need to be computed each time
             while (divisor) {
                 encoded [char_nbr++] = __Z85_encoder [value / divisor % 85];
                 divisor /= 85;
@@ -120,7 +120,7 @@ byte* Z85_decode (char *string)
         value = value * 85 + __Z85_decoder [(byte) string [char_nbr++] - 32];
         if (char_nbr % 5 == 0) {
             //  Output value in base 256
-            uint divisor = 16777216; // 256 ^ 3, doesn't need to be computed every time.
+            uint32_t divisor = 16777216; // 256 ^ 3, doesn't need to be computed every time.
             while (divisor) {
                 decoded [byte_nbr++] = value / divisor % 256;
                 divisor /= 256;
