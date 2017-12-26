@@ -69,11 +69,13 @@ static byte __Z85_decoder [96] = {
 //  --------------------------------------------------------------------------
 //  Encode a byte array as a string
 
-char* Z85_encode (byte *data, size_t size)
+char* Z85_encode ( const void *in_data, size_t size)
 {
     //  Accepts only byte arrays bounded to 4 bytes
     if (size % 4)
         return NULL;
+
+    uint8_t *data = (uint8_t*) in_data;
     
     size_t encoded_size = size * 5 / 4;
     char *encoded = malloc (encoded_size + 1);
