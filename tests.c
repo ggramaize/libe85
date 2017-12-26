@@ -34,7 +34,7 @@
 
 //  Basic language taken from CZMQ's prelude
 typedef unsigned char byte;
-#define streq(s1,s2) (!strcmp ((s1), (s2)))
+#define streq(s1,s2,n) (!strncmp ((s1), (s2), (n)))
 
 //  Maps base 256 to base 85
 static char encoder [85 + 1] = {
@@ -150,7 +150,7 @@ int main (void)
 
     encoded = Z85_encode (NULL, 0);
     decoded = Z85_decode (encoded);
-    assert (streq (encoded, ""));
+    assert (streq (encoded, "", 1));
     free (decoded);
     free (encoded);
     
@@ -159,7 +159,7 @@ int main (void)
     
     encoded = Z85_encode (test_data_1, sizeof (test_data_1));
     assert (strlen (encoded) == 10);
-    assert (streq (encoded, "HelloWorld"));
+    assert (streq (encoded, "HelloWorld", 11));
     decoded = Z85_decode (encoded);
     assert (memcmp (test_data_1, decoded, sizeof (test_data_1)) == 0);
     free (decoded);
@@ -167,7 +167,7 @@ int main (void)
     
     encoded = Z85_encode (test_data_2, sizeof (test_data_2));
     assert (strlen (encoded) == 40);
-    assert (streq (encoded, "JTKVSB%%)wK0E.X)V>+}o?pNmC{O&4W4b!Ni{Lh6"));
+    assert (streq (encoded, "JTKVSB%%)wK0E.X)V>+}o?pNmC{O&4W4b!Ni{Lh6", 41));
     decoded = Z85_decode (encoded);
     assert (memcmp (test_data_2, decoded, sizeof (test_data_2)) == 0);
     free (decoded);
