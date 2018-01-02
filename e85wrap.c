@@ -91,6 +91,22 @@ void strip_garbage_E85( char *in, char **out)
 	*out = (char*) realloc( *out, out_len);	
 }
 
+void strip_baseline_E85( char *in, char **out)
+{
+	size_t in_len = strlen( in);
+	size_t out_len = 0;
+	*out = (char*) malloc( in_len+1); 
+
+	for( size_t i = 0; i < in_len; ++i)
+	       if( in[i] != '\n' && in[i] != '\r' && in[i] != ' ' )
+	       {
+			*(*out+out_len++) = in[i];
+	       }
+
+	*(*out+out_len++) = 0;
+	*out = (char*) realloc( *out, out_len);	
+}
+
 int validate_E85_string( char *str)
 {
 	size_t in_len = strlen( str);
@@ -202,13 +218,16 @@ int main( int argc, char **argv)
 	}
 	else
 	{
+		char *cleanInputData = NULL;
+
 		if( ignore_garbage == 1 )
-		{
-			char *cleanInputData = NULL;
 			strip_garbage_E85( (char*) inputData, &cleanInputData);
-			free( inputData);
-			inputData = (uint8_t*) cleanInputData;
-		}	
+		else
+			strip_baseline_E85( (char*) inputData, &cleanInputData);
+			
+	
+		free( inputData);
+		inputData = (uint8_t*) cleanInputData;
 
 		if( validate_E85_string( (char*) inputData) != true )
 		{
