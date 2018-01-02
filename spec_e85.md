@@ -8,7 +8,7 @@ stable
 
 This document specifies E85, a format for representing binary data as printable text. E85 is an extension of Z85 encoding mechanisms, modified to provide byte-accurate binary stream wrapping.
 
-# Preamble
+## Preamble
 
 Copyright (c) 2017 Geoffroy GRAMAIZE.
 
@@ -18,7 +18,7 @@ This Specification is a free and open standard and is governed by the Digital St
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
 
-# Problem Statement
+## Problem Statement
 
 When representing binary values in code and in text files (such as configuration data), the developer must choose a printable representation. The simplest choice is Base16, where each byte is printed as two hexadecimal values.
 
@@ -32,7 +32,7 @@ Our ideal encoding is designed for 4-byte chunks like Z85, but is able to handle
 
 An E85 implementation is able to natively decode a Z85 string frame.
 
-# Formal Specification
+## Formal Specification
 
 An E85 implementation takes a binary frame and encodes it as a printable ASCII string, or takes an ASCII encoded string and decodes it into a binary frame.
 
@@ -58,24 +58,20 @@ To encode a frame, an implementation SHALL take four octets at a time from the b
 
 To decode a string, an implementation SHALL take five characters at a time from the string and convert them into four octets of data representing a 32-bit unsigned integer in network byte order. The five characters SHALL each be converted into a value 0 to 84, and accumulated by multiplication by 85, from most to least significant.
 
-# Test Case
+## Test Case
 
 As a test case, a frame containing these 9 bytes:
 
-+------+------+------+------+------+------+------+------+------+
 | 0x86 | 0x4F | 0xD2 | 0x6F | 0xB5 | 0x59 | 0xF7 | 0x5B | 0x00 |
-+------+------+------+------+------+------+------+------+------+
 
 SHALL encode as the following 18 characters:
 
-+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
 | H | e | l | l | o | W | o | r | l | d | 0 | 0 | 0 | 0 | 0 | _ | _ | _ |
-+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
 
-# Reference Implementation
+## Reference Implementation
 
 A reference implementation in C is provided in the repository at https://github.com/ggramaize/libz85/
 
-# Security Considerations
+## Security Considerations
 
 Implementations MUST take care that buffers intended to receive encoded and decoded data are large enough. Clearly, a properly-crafted encoded string can create any arbitrary binary sequence, which makes E85 an easy vector for attack into a badly-designed implementation.
