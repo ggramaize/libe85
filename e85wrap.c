@@ -207,8 +207,26 @@ int main( int argc, char **argv)
 	}
 	else
 	{
-		fprintf( stderr, "Reading from STDIN not yet implemented\n");
-		exit(255);
+		// Reopen STDIN in binary
+		freopen( NULL, "rb", stdin);
+
+		char c = fgetc(stdin);
+
+		inputData = (uint8_t*) malloc(1);
+		++inputDataSZ;
+
+		if( !feof(stdin) )
+			inputData[0] = c;
+		else
+			inputData[0] = 0;
+
+		c = fgetc( stdin);
+		while( !feof(stdin) )
+		{
+			inputData = (uint8_t*) realloc( inputData, ++inputDataSZ);
+			inputData[ inputDataSZ-1 ] = c;
+			c = fgetc( stdin);
+		}
 	}
 
 	if( decode != 1 )
