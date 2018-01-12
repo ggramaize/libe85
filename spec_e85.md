@@ -44,15 +44,15 @@ The string frame, excluding the erasure characters, SHALL have a length that is 
 
 The encoding and decoding SHALL use this representation for each base-85 value from zero to 84:
 
- 0 -  9:  0 1 2 3 4 5 6 7 8 9
-10 - 19:  a b c d e f g h i j
-20 - 29:  k l m n o p q r s t
-30 - 39:  u v w x y z A B C D
-40 - 49:  E F G H I J K L M N
-50 - 59:  O P Q R S T U V W X
-60 - 69:  Y Z . - : + = ^ ! /
-70 - 79:  * ? & < > ( ) [ ] {
-80 - 84:  } @ % $ #
+	 0 -  9:  0 1 2 3 4 5 6 7 8 9
+	10 - 19:  a b c d e f g h i j
+	20 - 29:  k l m n o p q r s t
+	30 - 39:  u v w x y z A B C D
+	40 - 49:  E F G H I J K L M N
+	50 - 59:  O P Q R S T U V W X
+	60 - 69:  Y Z . - : + = ^ ! /
+	70 - 79:  * ? & < > ( ) [ ] {
+	80 - 84:  } @ % $ #
 
 To encode a frame, an implementation SHALL take four octets at a time from the binary frame and convert them into five printable characters. The four octets SHALL be treated as an unsigned 32-bit integer in network byte order (big endian). The five characters SHALL be output from most significant to least significant (big endian).
 
